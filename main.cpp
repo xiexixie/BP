@@ -144,6 +144,78 @@ int main()
   for (size_t time; time < max_times; time++)
   {
     delta_reset();
+
+    double err = 0.f;
+    for (auto &idx : train_data)
+    {
+      // 输入层初始化
+      for (int i = 0; i < IN_NODE; i++)
+        input_layer[i]->value = idx.input[i];
+
+      // 正向传播
+      // 求隐藏层的value
+      for (int i = 0; i < HIDE_NODE; i++)
+      {
+        double sum = 0.f;
+        for (int j = 0; j < IN_NODE; j++)
+        {
+          sum += input_layer[j]->value * input_layer[j]->weight[i];
+        }
+        sum -= hidden_layer[i]->bias;
+        hidden_layer[i]->value = sigmoid(sum);
+      }
+      // 求输出层value
+      for (int i = 0; i < OUT_NODE; i++)
+      {
+        double sum = 0.f;
+        for (int j = 0; j < HIDE_NODE; j++)
+        {
+          sum += hidden_layer[j]->value * hidden_layer[j]->weight[i];
+        }
+        sum -= output_layer[i]->bias;
+        output_layer[i]->value = sigmoid(sum);
+      }
+
+      // 计算误差
+      double loss = 0.f;
+      for (int i = 0; i < OUT_NODE; i++)
+      {
+        double temp = std::abs(output_layer[i]->value - idx.output[i]);
+        loss += temp * temp / 2;
+      }
+      err = std::max(err, loss);
+
+      // 反向传播
+      // 计算delta
+      // out_node bias_delta
+      for (int i = 0; i < OUT_NODE; i++)
+      {
+        output_layer[i]->bias_delta += -(idx.output[i] - output_layer[i]->value) * output_layer[i]->value * (1.0 - output_layer[i]->value);
+      }
+      // hide_node weight_delta
+      for (int i = 0; i < HIDE_NODE; i++)
+      {
+        for (int j = 0; j < OUT_NODE; j++)
+        {
+          hidden_layer[i]->weight_delta[j] += (idx.output[j] - output_layer[j]->value) * output_layer[j]->value * (1.0 - output_layer[j]->value) * hidden_layer[i]->value;
+        }
+      }
+      // hide_node bias_delta
+      for (int i = 0; i < HIDE_NODE; i++)
+      {
+        double sum = 0.f;
+        for (int j = 0; j < OUT_NODE; j++)
+        {
+          sum += -(idx.output[j] - output_layer[j]->value) * output_layer[j]->value * (1.0 - output_layer[j]->value) * hidden_layer[i]->weight[j];
+        }
+        hidden_layer[i]->bias_delta += sum * hidden_layer[i]->value * (1.0 - hidden_layer[i]->value);
+      }
+    }
+    if (err < thereshoid)
+    {
+      std::cout << "train success with " << time + 1 << " times" << std::endl;
+      break;
+    }
   }
   return 0;
 }
