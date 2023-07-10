@@ -3,6 +3,25 @@
 #include <vector>
 #include <fstream>
 #include <random>
+#include <chrono>
+
+// 计时器
+struct Timer
+{
+  std::chrono::high_resolution_clock::time_point start, end;
+  std::chrono::duration<float> duration;
+  Timer()
+  {
+    start = std::chrono::high_resolution_clock::now();
+  }
+  ~Timer()
+  {
+    end = std::chrono::high_resolution_clock::now();
+    duration = end - start;
+    float s = duration.count();
+    std::cout << "runing time: " << s << "s" << std::endl;
+  }
+};
 
 #define IN_NODE 2
 #define HIDE_NODE 4
@@ -142,6 +161,7 @@ void delta_reset()
 
 int main()
 {
+  Timer timer; // 计时器
   init();
   int count = 0;
   std::vector<Sample> train_data = get_train_data("train_data.txt");
@@ -264,7 +284,7 @@ int main()
   }
   if (count >= max_times)
   {
-    std::cout << "train failed!";
+    std::cout << "train failed!\n";
     return 0;
   }
   std::vector<Sample> test_data = get_test_data("test_data.txt");
