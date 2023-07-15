@@ -319,7 +319,7 @@ int main()
       }
       sum -= output_layer[i]->bias;
       output_layer[i]->value = sigmoid(sum);
-      idx.output.push_back(output_layer[i]->value);
+      idx.output.push_back((output_layer[i]->value > 0.5) ? 1 : 0);
       for (auto &temp : idx.input)
       {
         std::cout << temp << " ";
