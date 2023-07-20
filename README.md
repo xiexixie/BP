@@ -6,7 +6,26 @@ A simple Back propagation neural network in c++
         输入层:1 
         隐藏层:1
         输出层:1    
-
+## 项目结构
+```
+BP:     
+├─CMakeLists.txt  
+├─LICENSE  
+├─main.cpp  
+├─README.md  
+├─test_data.txt  
+├─train_data.txt  
+├─include  
+│    ├─net.h  
+│    ├─timer.h  
+│    └─tools.h  
+├─old  
+│    ├─bp.cpp  
+│    └─bp.exe  
+└─src  
+     ├─net.cpp  
+     └─tools.cpp  
+```  
 ## 测试实例
 `注：本项目没有模型保存功能，每次训练均为重新开始，结果可能不同`    
 
@@ -55,17 +74,18 @@ A simple Back propagation neural network in c++
 <br>
 测试结果如下： 
 
-     train success with 296298 times !  
-     predict result:
-     0.111 0.112 0.0109295
-     0.001 0.999 0.999999
-     0.123 0.345 0.99999
-     0.123 0.456 0.999998
-     0.123 0.789 0.999999
-     0.234 0.567 0.999998
-     0.234 0.678 0.999998
-     0.387 0.401 0.0221967
-     0.616 0.717 0.984898
-     0.555 0.555 0.0120691
+     train success with 301923 times !
+      runing time: 7.15121s
+      predict result:
+      0.111 0.112 0
+      0.001 0.999 1
+      0.123 0.345 1
+      0.123 0.456 1
+      0.123 0.789 1
+      0.234 0.567 1
+      0.234 0.678 1
+      0.387 0.387 0
+      0.616 0.717 1
+      0.555 0.555 0
 
 
