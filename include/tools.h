@@ -21,28 +21,11 @@ struct Node
   double value{}, bias{}, bias_delta{};
   std::vector<double> weight, weight_delta;
 };
-
-// 激活函数
-double sigmoid(double x)
+namespace utilities
 {
-  return 1.0 / (1.0 + std::exp(-x));
-}
+  // 激活函数
+  double sigmoid(double x);
 
-std::vector<double> get_data(const std::string &filename)
-{
-  std::vector<double> res;
-  std::ifstream ifs(filename);
-  if (ifs.is_open())
-  {
-    while (!ifs.eof())
-    {
-      double buffer;
-      ifs >> buffer;
-      res.push_back(buffer);
-    }
-    ifs.close();
-  }
-  else
-    std::cout << "Error:open file failed!" << std::endl;
-  return res;
+  std::vector<double> get_data(const std::string &filename);
+
 }
