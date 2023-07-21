@@ -1,5 +1,6 @@
 # BP
-A simple Back propagation neural network in c++  
+A simple Back propagation neural network in c++   
+`注：该项目对于计算过程并未使用矩阵，速度较慢` 
 ## 网络结构
 本次项目的BP神经网络结构采用最简单的三层结构：  
         
